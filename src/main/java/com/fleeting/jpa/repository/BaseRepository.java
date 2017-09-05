@@ -17,11 +17,12 @@ import java.util.Map;
 @NoRepositoryBean
 public interface BaseRepository<T,ID extends Serializable> extends JpaRepository<T,ID> {
 
+    @Deprecated
     List<T> getListBySQL(String sql);
 
     List<T> getList(T t);
 
-    Page<T> getPageList(T t, Pageable pageable);
+    Page<T> getList(T t, Pageable pageable);
 
     List<T> getListByCondition(List<QueryCondition> conditions);
 

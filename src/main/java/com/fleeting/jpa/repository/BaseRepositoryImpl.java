@@ -48,7 +48,7 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRep
     }
 
     @Override
-    public Page<T> getPageList(T t, Pageable pageable) {
+    public Page<T> getList(T t, Pageable pageable) {
         return this.findAll(getPredicateByProp(t),pageable);
     }
 
