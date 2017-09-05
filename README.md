@@ -10,11 +10,11 @@
 
 spring-data-jpa为你提供了模板，还可以帮你实现接口。我们只需要写一个接口就能对数据进行访问。
 
-public interface UserRepository extends JpaRepository<User, Long> {
-     User findByName(String name);
-     @Query("from User u where u.name=:name")
-     User findUser(@Param("name") String name);
-}
+     public interface UserRepository extends JpaRepository<User, Long> {
+          User findByName(String name);
+          @Query("from User u where u.name=:name")
+          User findUser(@Param("name") String name);
+     }
  
 就这样一段代码，无需编写实现类，在项目启动的时候底层会自动帮你产生相应的实现类。 
 
@@ -32,20 +32,20 @@ jpa4springboot则是在这个之上添加自定义，目标是简化开发，提
 **简单上手**
 第一步，添加依赖（把项目拉下来后直接打到本地maven库就好了，可以自行部署到自有的maven库）
 
-<groupId>com.fleeting</groupId>
-<artifactId>jpa4springboot</artifactId>
-<version>1.0-SNAPSHOT</version>
+     <groupId>com.fleeting</groupId>
+     <artifactId>jpa4springboot</artifactId>
+     <version>1.0-SNAPSHOT</version>
 
 第二步，在项目入口处添加
 
-@EnableJpaRepositories(repositoryFactoryBeanClass = BaseRepositoryFactoryBean.class)
+     @EnableJpaRepositories(repositoryFactoryBeanClass = BaseRepositoryFactoryBean.class)
 
 第三步，声明对应的Repository，继承BaseRepository
 
 
-public interface ProductRepository extends BaseRepository<Product,Long> {
+     public interface ProductRepository extends BaseRepository<Product,Long> {
 
-}
+     }
 
 
 以上三步后就可以使用spring-data-jpa和扩展的功能。
@@ -56,7 +56,7 @@ springboot-jpa-data的使用可以参考官方文档，这里做了扩展，以�
 
 使用注解QueryField来标记实体类中需要作为查询条件的字段，配合springmvc使用简单方便快捷：
 
-@RequestMapping("/prodlist")
+     @RequestMapping("/prodlist")
      public String prodlist(Product product,Integer page,Map<String,Object> resultMap){
          if (page == null)
              page = 0;
@@ -69,27 +69,25 @@ springboot-jpa-data的使用可以参考官方文档，这里做了扩展，以�
 
 使用QueryCondition来封装where条件，所见即所得：
 
-
-List<QueryCondition> conditions = new ArrayList<>();
-QueryCondition cd = new QueryCondition("haha","prodName","鲨鱼");
-QueryCondition cd1 = new QueryCondition("prodName", Operators.LIKE,"鲨鱼");
-QueryCondition cd2 = new QueryCondition("prodDesc", Operators.IS_NULL);
-QueryCondition cd3 = new QueryCondition("prodCode", Operators.IS_NOT_NULL);
-QueryCondition cd4 = new QueryCondition("prodName", Operators.NOT_IN,Arrays.asList("鲨鱼"));
-QueryCondition cd5 = new QueryCondition("prodCode", Operators.EQ, "大鲨鱼");
-cd.setConditions(Arrays.asList(cd1), LinkType.OR);
-cd1.setConditions(Arrays.asList(cd2),LinkType.AND);
-cd2.setConditions(Arrays.asList(cd3,cd4),LinkType.OR);
-conditions.add(cd5);
-conditions.add(cd);
-productDao.getListByCondition(conditions)
-productDao.getListByCondition(conditions,new PageRequest(0,20))
-
+     List<QueryCondition> conditions = new ArrayList<>();
+     QueryCondition cd = new QueryCondition("haha","prodName","鲨鱼");
+     QueryCondition cd1 = new QueryCondition("prodName", Operators.LIKE,"鲨鱼");
+     QueryCondition cd2 = new QueryCondition("prodDesc", Operators.IS_NULL);
+     QueryCondition cd3 = new QueryCondition("prodCode", Operators.IS_NOT_NULL);
+     QueryCondition cd4 = new QueryCondition("prodName", Operators.NOT_IN,Arrays.asList("鲨鱼"));
+     QueryCondition cd5 = new QueryCondition("prodCode", Operators.EQ, "大鲨鱼");
+     cd.setConditions(Arrays.asList(cd1), LinkType.OR);
+     cd1.setConditions(Arrays.asList(cd2),LinkType.AND);
+     cd2.setConditions(Arrays.asList(cd3,cd4),LinkType.OR);
+     conditions.add(cd5);
+     conditions.add(cd);
+     productDao.getListByCondition(conditions)
+     productDao.getListByCondition(conditions,new PageRequest(0,20))
 
 这里实现了一个稍微复杂的sql。
 
 3.update
 
-int update(Map<String, Object> newValues, List<QueryCondition> conditions);
+     int update(Map<String, Object> newValues, List<QueryCondition> conditions);
 
 后续会继续优化改进，欢迎提出各种意见和建议。
