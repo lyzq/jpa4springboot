@@ -32,9 +32,11 @@ jpa4springboot则是在这个之上添加自定义，目标是简化开发，提
 **简单上手**
 第一步，添加依赖（把项目拉下来后直接打到本地maven库就好了，可以自行部署到自有的maven库）
 
-`<groupId>com.fleeting</groupId>
-   <artifactId>jpa4springboot</artifactId>
-   <version>1.0-SNAPSHOT</version>`
+`
+<groupId>com.fleeting</groupId>
+<artifactId>jpa4springboot</artifactId>
+<version>1.0-SNAPSHOT</version>
+   `
 
 第二步，在项目入口处添加
 `@EnableJpaRepositories(repositoryFactoryBeanClass = BaseRepositoryFactoryBean.class)`
@@ -42,7 +44,9 @@ jpa4springboot则是在这个之上添加自定义，目标是简化开发，提
 第三步，声明对应的Repository，继承BaseRepository
 
 `
-public interface ProductRepository extends BaseRepository<Product,Long> {}
+public interface ProductRepository extends BaseRepository<Product,Long> {
+
+}
 `
 
 以上三步后就可以使用spring-data-jpa和扩展的功能。
